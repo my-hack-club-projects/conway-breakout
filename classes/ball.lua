@@ -23,78 +23,26 @@ function Ball:check(entities)
     for _, entity in ipairs(entities) do
         if entity.width and entity.height then
             if Game.collision.circleRectangle(self.x, self.y, self.radius, entity.x, entity.y, entity.width, entity.height) then
-                if entity.isPaddle then
-                    print("paddle")
-                    self:bounce('y')
-                    self.velocity.x = (self.x - entity.x) / entity.width * (entity.speed * entity.direction)
-
-                    return "paddle"
-                elseif entity.isWall then
-                    print("wall")
-                    if entity.side == "bottom" then
-                        return "bottom"
-                    else
-                        if entity.side == "top" then
-                            self:bounce('y')
-                        else
-                            self:bounce('x')
-                        end
-
-                        return "wall"
-                    end
-                elseif entity.isCell then
-                    local dx = self.x - entity.x
-                    local dy = self.y - entity.y
-                    local width = entity.width
-                    local height = entity.height
-
-                    if math.abs(dx) > math.abs(dy) then
-                        if dx > 0 then
-                            self.x = entity.x + width + self.radius
-                        else
-                            self.x = entity.x - self.radius
-                        end
-                        self:bounce('x')
-                    else
-                        if dy > 0 then
-                            self.y = entity.y + height + self.radius
-                        else
-                            self.y = entity.y - self.radius
-                        end
-                        self:bounce('y')
-                    end
-
-                    return "cell"
-                end
-
                 if entity.isWall and entity.side == "bottom" then
                     return "bottom"
                 end
 
-                -- local dx = self.x - entity.x
-                -- local dy = self.y - entity.y
-                -- local width = entity.width
-                -- local height = entity.height
+                local dx = self.x - entity.x
+                local dy = self.y - entity.y
+                local width = entity.width
+                local height = entity.height
 
-                -- if math.abs(dx) > math.abs(dy) then
-                --     if dx > 0 then
-                --         self.x = entity.x + width + self.radius
-                --     else
-                --         self.x = entity.x - self.radius
-                --     end
-                --     self:bounce('x')
-                -- else
-                --     if dy > 0 then
-                --         self.y = entity.y + height + self.radius
-                --     else
-                --         self.y = entity.y - self.radius
-                --     end
-                --     self:bounce('y')
-                -- end
+                if math.abs(dx) > math.abs(dy) then
+                    self:bounce('y')
+                else
+                    self:bounce('x')
+                end
 
-                -- if entity.isPaddle then
-                --     -- self.velocity.x = self.velocity.x + (entity.speed * entity.direction)
-                -- end
+                if entity.isPaddle then
+                    self.velocity.x = self.velocity.x + (entity.speed * entity.direction)
+                elseif entity.isCell then
+                    entity:destroy()
+                end
             end
         end
     end
