@@ -11,7 +11,7 @@
         - At the start of the game, insert random 1's and 0's into the grid near the top (define bounds for this)
         - Simulate the game of life on those cells (not the walls)
         - Add a timer that counts up until there are no cells left
-        - Score is calculated using: 1 / (time) * 1000 or a similar formula
+        - Score is determined by the time it takes to clear the cells. Lower is better.
         - Add a game over screen that displays the score with a button to restart
         - Add a start screen that explains the game and has a button to start
 
@@ -40,8 +40,7 @@
             - render()
         Game -- main game object, passed to all states
             - state
-            - score
-            - timer
+            - bestTime
             - update(dt)
             - render()
             - setState(state)
