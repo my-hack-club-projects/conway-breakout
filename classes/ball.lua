@@ -3,6 +3,8 @@ local Game = require 'classes.game' -- used for collision detection
 
 local Ball = oo.class()
 
+local DEBOUNCE = 0.1
+
 function Ball:init(x, y, radius)
     self.x = x or 0
     self.y = y or 0
@@ -14,6 +16,8 @@ function Ball:init(x, y, radius)
     self.gravity = 50
 
     self.isBall = true
+
+    self.debounce = {}
 end
 
 function Ball:bounce(axis)
@@ -25,7 +29,13 @@ end
 function Ball:check(entities)
     for _, entity in ipairs(entities) do
         if entity.width and entity.height then
+            if os.time() - (self.debounce[entity] or 0) < DEBOUNCE then
+                goto continue
+            end
+
             if Game.collision.circleRectangle(self.x, self.y, self.radius, entity.x, entity.y, entity.width, entity.height) then
+                self.debounce[entity] = os.time()
+
                 if entity.isWall and entity.side == "bottom" then
                     return "bottom"
                 end
@@ -46,6 +56,8 @@ function Ball:check(entities)
                 end
             end
         end
+
+        ::continue::
     end
 end
 
