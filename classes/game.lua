@@ -36,3 +36,5 @@ function Game:render()
         self.state:render()
     end
 end
+
+return Game
