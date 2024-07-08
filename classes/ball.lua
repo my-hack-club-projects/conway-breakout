@@ -9,6 +9,8 @@ function Ball:init(x, y, radius)
     self.radius = radius or 0
 
     self.velocity = { x = 0, y = 0 }
+    self.speedInheritance = 0.2
+    self.drag = 0.15
 
     self.isBall = true
 end
@@ -37,7 +39,7 @@ function Ball:check(entities)
                 end
 
                 if entity.isPaddle then
-                    self.velocity.x = self.velocity.x + (entity.speed * entity.direction)
+                    self.velocity.x = self.velocity.x + (entity.speed * entity.direction) * self.speedInheritance
                 elseif entity.isCell then
                     entity:destroy()
                 end
@@ -47,6 +49,8 @@ function Ball:check(entities)
 end
 
 function Ball:update(dt)
+    self.velocity.x = self.velocity.x * (1 - self.drag * dt)
+
     self.x = self.x + self.velocity.x * dt
     self.y = self.y + self.velocity.y * dt
 end
