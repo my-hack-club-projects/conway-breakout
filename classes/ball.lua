@@ -29,8 +29,6 @@ function Ball:check(entities)
 
                 local dx = self.x - entity.x
                 local dy = self.y - entity.y
-                local width = entity.width
-                local height = entity.height
 
                 if math.abs(dx) > math.abs(dy) then
                     self:bounce('y')
