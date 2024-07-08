@@ -5,6 +5,9 @@ local Game = oo.class()
 function Game:init()
     self.state = nil
     self.highScore = 0
+    
+    self.width = love.graphics.getWidth()
+    self.height = love.graphics.getHeight()
 end
 
 function Game:setState(state)
