@@ -33,9 +33,22 @@
             - render()
         Cell (Block)
             - isCell=true
+        State
+            - enter()
+            - exit()
+            - update(dt)
+            - render()
+        Game -- main game object, passed to all states
+            - state
+            - score
+            - timer
+            - update(dt)
+            - render()
+            - setState(state)
 
     States:
         - Start
         - Play
         - GameOver
 ]]
+
