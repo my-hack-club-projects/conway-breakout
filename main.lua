@@ -51,3 +51,30 @@
         - GameOver
 ]]
 
+local Game = require 'classes.game'
+
+local INITIAL_STATE = require 'states.test'
+
+function love.load()
+    love.window.setTitle('Breakout of Life')
+
+    love.graphics.setDefaultFilter('nearest', 'nearest')
+
+    love.window.setMode(640, 480, {
+        fullscreen = false,
+        resizable = true,
+        vsync = true
+    })
+
+    local game = Game.new()
+
+    game:setState(INITIAL_STATE.new(game))
+
+    function love.update(dt)
+        game:update(dt)
+    end
+
+    function love.draw()
+        game:render()
+    end
+end
