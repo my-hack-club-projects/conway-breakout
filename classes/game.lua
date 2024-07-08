@@ -8,6 +8,12 @@ function Game:init()
 end
 
 function Game:setState(state)
+    if state then
+        assert(state.enter, 'State must have an enter method')
+        assert(state.exit, 'State must have an exit method')
+        assert(state.update, 'State must have an update method')
+        assert(state.render, 'State must have a render method')
+    end
     if self.state then
         self.state:exit()
     end
