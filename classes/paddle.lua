@@ -12,17 +12,15 @@ function Paddle:init(x, y, width, height)
     self.maxX = 0
 
     self.speed = 1
+    self.direction = 0
+
+    self.isPaddle = true
 end
 
 function Paddle:update(dt)
-    if love.keyboard.isDown('a') then
-        self.x = self.x - self.speed * dt
-    end
+    self.direction = (love.keyboard.isDown('a') and -1 or 0) + (love.keyboard.isDown('d') and 1 or 0)
 
-    if love.keyboard.isDown('d') then
-        self.x = self.x + self.speed * dt
-    end
-
+    self.x = self.x + self.speed * self.direction * dt
     self.x = math.max(self.minX, math.min(self.maxX, self.x))
 end
 
