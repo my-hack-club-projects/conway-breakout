@@ -8,11 +8,6 @@ function State:init(name, game)
 
     self.name = name
     self.game = game
-
-    self.enter = function() end
-    self.exit = function() end
-    self.update = function() end
-    self.render = function() end
 end
 
 return State
