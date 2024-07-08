@@ -11,6 +11,7 @@ function Ball:init(x, y, radius)
     self.velocity = { x = 0, y = 0 }
     self.speedInheritance = 0.2
     self.drag = 0.15
+    self.gravity = 50
 
     self.isBall = true
 end
@@ -50,7 +51,7 @@ end
 
 function Ball:update(dt)
     self.velocity.x = self.velocity.x * (1 - self.drag * dt)
-
+    self.velocity.y = self.velocity.y + self.gravity * dt
     self.x = self.x + self.velocity.x * dt
     self.y = self.y + self.velocity.y * dt
 end
