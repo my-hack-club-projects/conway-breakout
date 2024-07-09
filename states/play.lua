@@ -32,7 +32,7 @@ function Play:enter()
     self.paddle.minX, self.paddle.maxX = 0, self.game.width - self.paddle.width
     self.paddle.speed = Play.PaddleSpeed
     self.paddle.accel = Play.PaddleAccel
-    self.ball = Ball.new(self.game.width / 2 + Play.BallSpawnPositionOffset.x, self.game.height - Play.PaddleOffset + Play.BallSpawnPositionOffset.y, Play.BallRadius)
+    self.ball = Ball.new(self.game.width / 2 + Play.BallSpawnPositionOffset.x - Play.BallRadius, self.game.height - Play.PaddleOffset + Play.BallSpawnPositionOffset.y - Play.BallRadius, Play.BallRadius)
     self.ball.velocity = Play.BallSpawnVelocity
 
     self.boundary = Boundary.new(self.game)
@@ -49,18 +49,27 @@ function Play:enter()
     self.music = self.game.audio.play("music")
 
     self.game:onResize(function(w, h)
-        self:setPaddlePosition(w, h)
+        self:reinitializePositions(w, h)
     end)
 end
 
-function Play:setPaddlePosition(w, h)
+function Play:reinitializePositions(w, h)
     assert(self.paddle, 'Paddle not initialized')
-    local xPercentage = self.paddle.x / self.game.width
+    assert(self.ball, 'Ball not initialized')
+    assert(self.conwayGrid, 'ConwayGrid not initialized')
+
+    local xPercentagePaddle = (self.paddle.x + self.paddle.width / 2)  / self.game.width
 
     self.paddle.minX, self.paddle.maxX = 0, w - self.paddle.width
 
-    self.paddle.x = w * xPercentage
+    self.paddle.x = w * xPercentagePaddle - self.paddle.width / 2
     self.paddle.y = h - Play.PaddleOffset
+
+    local xPercentageBall = (self.ball.x + Play.BallRadius) / self.game.width
+    local yPercentageBall = (self.ball.y + Play.BallRadius) / self.game.height
+
+    self.ball.x = w * xPercentageBall - Play.BallRadius
+    self.ball.y = h * yPercentageBall - Play.BallRadius
 end
 
 function Play:exit()
