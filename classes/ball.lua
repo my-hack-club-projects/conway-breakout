@@ -3,7 +3,7 @@ local Game = require 'classes.game' -- used for collision detection
 
 local Ball = oo.class()
 
-local DEBOUNCE = 0.1
+local DEBOUNCE = 0.0
 
 function Ball:init(x, y, radius)
     self.x = x or 0
@@ -27,36 +27,47 @@ function Ball:bounce(axis)
 end
 
 function Ball:check(entities)
-    for _, entity in ipairs(entities) do
-        if not entity.width or not entity.height then goto continue end
-        if entity.skipCollision == true then goto continue end
-        if os.time() - (self.debounce[entity] or 0) < DEBOUNCE then goto continue end
+    local function checkTable(tbl)
+        for _, entity in ipairs(tbl) do
+            if entity.width and entity.height then
+                if entity.skipCollision == true then goto continue end
+                if entity.isCell and entity.alive == false then goto continue end
 
-        if not Game.collision.circleRectangle(self.x, self.y, self.radius, entity.x, entity.y, entity.width, entity.height) then goto continue end
+                if os.time() - (self.debounce[entity] or 0) < DEBOUNCE then goto continue end
 
-        self.debounce[entity] = os.time()
+                if not Game.collision.circleRectangle(self.x, self.y, self.radius, entity.x, entity.y, entity.width, entity.height) then goto continue end
 
-        if entity.isWall and entity.side == "bottom" then
-            return "bottom"
+                self.debounce[entity] = os.time()
+
+                if entity.isWall and entity.side == "bottom" then
+                    return "bottom"
+                end
+
+                local dx = self.x - entity.x
+                local dy = self.y - entity.y
+
+                if math.abs(dx) > math.abs(dy) then
+                    self:bounce('y')
+                else
+                    self:bounce('x')
+                end
+
+                if entity.isPaddle then
+                    self.velocity.x = self.velocity.x + (entity.speed * entity.direction) * self.speedInheritance
+                elseif entity.isCell then
+                    return entity
+                end
+
+                ::continue::
+            else
+                local result = checkTable(entity)
+
+                if result then return result end
+            end
         end
-
-        local dx = self.x - entity.x
-        local dy = self.y - entity.y
-
-        if math.abs(dx) > math.abs(dy) then
-            self:bounce('y')
-        else
-            self:bounce('x')
-        end
-
-        if entity.isPaddle then
-            self.velocity.x = self.velocity.x + (entity.speed * entity.direction) * self.speedInheritance
-        elseif entity.isCell then
-            entity:destroy()
-        end
-
-        ::continue::
     end
+
+    return checkTable(entities)
 end
 
 function Ball:update(dt)

@@ -52,6 +52,8 @@ function Play:update(dt)
 
     if collidedWith == 'bottom' then
         print("game over")
+    elseif type(collidedWith) == 'table' and collidedWith.isCell then
+        collidedWith.alive = collidedWith.alive and not collidedWith.alive
     end
 
     _doForEachEntity(self.entities, function(entity)

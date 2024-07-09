@@ -5,13 +5,15 @@ local ConwayCell = oo.class()
 ConwayCell.CellSize = 32
 
 function ConwayCell:init(x, realX, y, realY)
-    self.x = x or 0
-    self.y = y or 0
-    self.realX = realX or 0
-    self.realY = realY or 0
+    self.x = realX or 0
+    self.y = realY or 0
+    self.gridX = x or 0
+    self.gridY = y or 0
     self.alive = false
 
     self.isCell = true
+    self.width = ConwayCell.CellSize
+    self.height = ConwayCell.CellSize
 
     self.update = function() end
 end
@@ -19,7 +21,7 @@ end
 function ConwayCell:render()
     if self.alive then
         love.graphics.setColor(1,1,1)
-        love.graphics.rectangle('fill', self.realX, self.realY, ConwayCell.CellSize, ConwayCell.CellSize)
+        love.graphics.rectangle('fill', self.x, self.y, ConwayCell.CellSize, ConwayCell.CellSize)
     end
 end
 
