@@ -19,7 +19,7 @@ function Play:enter()
 
     self.entities = {}
 
-    self.paddle = Paddle.new(self.game.width / 2 - 32, self.game.height - 32, 64, 16)
+    self.paddle = Paddle.new(self.game.width / 2 - 32, self.game.height - 38, 64, 16)
     self.paddle.minX, self.paddle.maxX = 0, self.game.width - self.paddle.width
     self.paddle.speed = 2500
 
@@ -70,12 +70,14 @@ function Play:update(dt)
     local collidedWith = self.ball:check(self.entities)
 
     if collidedWith == 'bottom' then
+        self.game.audio.play('lose')
         self.game:setState(GameOverState.new(self.game))
     elseif type(collidedWith) == 'table' and collidedWith.isCell then
         collidedWith.alive = collidedWith.alive and not collidedWith.alive
         self.destroyedCells = self.destroyedCells + 1
 
         if self.conwayGrid:countAliveCells() == 0 then
+            -- TODO: success sound
             self.success = true
             self.game:setState(GameOverState.new(self.game))
         end
