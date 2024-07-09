@@ -1,5 +1,7 @@
 local oo = require 'lib.oo'
 local State = require 'classes.state'
+local GameOverState = require 'states.gameover'
+
 local Paddle, Ball, Boundary, ConwayGrid = require 'classes.paddle', require 'classes.ball', require 'classes.boundary', require 'classes.conwaygrid'
 
 local Play = oo.class(State)
@@ -33,9 +35,15 @@ function Play:enter()
     for _, wall in pairs(self.boundary.walls) do
         table.insert(self.entities, wall)
     end
+
+    self.update = Play.update
 end
 
 function Play:exit()
+    self.update = function() end
+end
+
+function Play:cleanup()
     self.paddle = nil
     self.ball = nil
     self.boundary = nil
@@ -58,6 +66,7 @@ function Play:update(dt)
 
     if collidedWith == 'bottom' then
         print("game over")
+        self.game:setState(GameOverState.new(self.game))
     elseif type(collidedWith) == 'table' and collidedWith.isCell then
         collidedWith.alive = collidedWith.alive and not collidedWith.alive
 
