@@ -3,6 +3,7 @@ local oo = require 'lib.oo'
 local Game = oo.class()
 
 Game.collision = {}
+Game.color = {}
 
 function Game:init()
     self.state = nil
@@ -40,6 +41,7 @@ function Game.collision.circle(x1, y1, r1, x2, y2, r2)
     return (x1 - x2)^2 + (y1 - y2)^2 < (r1 + r2)^2
 end
 
+
 function Game.collision.circleRectangle(cx, cy, radius, rx, ry, rw, rh)
     local dx = math.abs(cx - (rx + rw / 2))
     local dy = math.abs(cy - (ry + rh / 2))
@@ -54,6 +56,18 @@ function Game.collision.circleRectangle(cx, cy, radius, rx, ry, rw, rh)
 
     local cornerDistanceSq = (dx - rw / 2)^2 + (dy - rh / 2)^2
     return cornerDistanceSq <= (radius^2)
+end
+
+function Game.color.hex2color(hex)
+    local splitToRGB = {}
+    
+    if #hex < 6 then hex = hex .. string.rep("F", 6 - #hex) end --flesh out bad hexes
+    
+    for x = 1, #hex - 1, 2 do
+         table.insert(splitToRGB, tonumber(hex:sub(x, x + 1), 16)) --convert hexes to dec
+         if splitToRGB[#splitToRGB] < 0 then splitToRGB[#splitToRGB] = 0 end --prevents negative values
+    end
+    return unpack(splitToRGB)
 end
 
 function Game:update(dt)
