@@ -1,6 +1,6 @@
 local oo = require 'lib.oo'
 local State = require 'classes.state'
-local Paddle, Ball, Boundary = require 'classes.paddle', require 'classes.ball', require 'classes.boundary'
+local Paddle, Ball, Boundary, ConwayGrid = require 'classes.paddle', require 'classes.ball', require 'classes.boundary', require 'classes.conwaygrid'
 
 local Play = oo.class(State)
 
@@ -21,9 +21,11 @@ function Play:enter()
     self.ball.velocity = { x = 0, y = 200 }
 
     self.boundary = Boundary.new(self.game)
+    self.conwayGrid = ConwayGrid.new(0, 0, self.game.width, self.game.height / 2)
 
     table.insert(self.entities, self.paddle)
     table.insert(self.entities, self.ball)
+    table.insert(self.entities, self.conwayGrid)
 
     for _, wall in pairs(self.boundary.walls) do
         table.insert(self.entities, wall)
