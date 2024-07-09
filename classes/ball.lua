@@ -3,7 +3,7 @@ local Game = require 'classes.game' -- used for collision detection
 
 local Ball = oo.class()
 
-local DEBOUNCE = 0.05
+local DEBOUNCE = 0.0
 
 function Ball:init(x, y, radius)
     self.x = x or 0
@@ -12,8 +12,8 @@ function Ball:init(x, y, radius)
 
     self.velocity = { x = 0, y = 0 }
     self.speedInheritance = 0.2
-    self.drag = 0.15
-    self.gravity = 50
+    self.drag = 0.07
+    self.gravity = 125
 
     self.image = love.graphics.newImage('assets/images/ball.png')
     self.isBall = true
