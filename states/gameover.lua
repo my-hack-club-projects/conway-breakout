@@ -17,16 +17,21 @@ function GameOver:enter(previousState)
 
     self.gui = Gui.new(self.game)
 
-    local label = TextLabel.new(self.game.width / 2, self.game.height / 3, 'Game Over!', 32)
+    local label = TextLabel.new(self.game.width / 2, self.game.height / 3, previousState.success and 'You win!' or 'Game over!', 32)
     self.gui:addChild(label)
 
-    local time = TextLabel.new(self.game.width / 2, self.game.height / 3 + 32, string.format('Your time: %.2f', self.previousState.time), 16)
-    self.gui:addChild(time)
+    if previousState.success then
+        local time = TextLabel.new(self.game.width / 2, self.game.height / 3 + 32, string.format('Your time: %.2f', self.previousState.time), 16)
+        self.gui:addChild(time)
 
-    local bestTime = TextLabel.new(self.game.width / 2, self.game.height / 3 + 52, string.format('Best time: %.2f', self.game.bestTime), 16)
-    self.gui:addChild(bestTime)
+        local bestTime = TextLabel.new(self.game.width / 2, self.game.height / 3 + 52, string.format('Best time: %.2f', self.game.bestTime), 16)
+        self.gui:addChild(bestTime)
+    else
+        local destroyed = TextLabel.new(self.game.width / 2, self.game.height / 3 + 32, string.format('Cells destroyed: %u', self.previousState.destroyedCells), 16)
+        self.gui:addChild(destroyed)
+    end
 
-    local button = TextLabel.new(self.game.width / 2, self.game.height / 3 * 2, 'Retry?', 16)
+    local button = TextLabel.new(self.game.width / 2, self.game.height / 3 * 2, previousState.success and 'Play again' or 'Retry?', 16)
 
     button:bindToClick(function()
         self.game:setState(self.previousState)
@@ -37,6 +42,7 @@ end
 
 function GameOver:exit()
     self.gui = nil
+    self.previousState:cleanup()
 end
 
 function GameOver:update(dt)

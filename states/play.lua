@@ -14,6 +14,8 @@ end
 
 function Play:enter()
     self.time = 0
+    self.success = false
+    self.destroyedCells = 0
 
     self.entities = {}
 
@@ -49,6 +51,9 @@ function Play:cleanup()
     self.boundary = nil
     self.conwayGrid = nil
     self.entities = nil
+    self.time = nil
+    self.success = nil
+    self.destroyedCells = nil
 end
 
 local function _doForEachEntity(entities, func)
@@ -65,16 +70,14 @@ function Play:update(dt)
     local collidedWith = self.ball:check(self.entities)
 
     if collidedWith == 'bottom' then
-        print("game over")
         self.game:setState(GameOverState.new(self.game))
     elseif type(collidedWith) == 'table' and collidedWith.isCell then
         collidedWith.alive = collidedWith.alive and not collidedWith.alive
+        self.destroyedCells = self.destroyedCells + 1
 
         if self.conwayGrid:countAliveCells() == 0 then
-            -- player wins
-            print("player wins with time " .. self.time .. " seconds")
-
-            self.game.time = self.time
+            self.success = true
+            self.game:setState(GameOverState.new(self.game))
         end
     end
 
