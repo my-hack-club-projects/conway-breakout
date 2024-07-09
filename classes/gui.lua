@@ -11,10 +11,16 @@ function Gui:init(game)
 end
 
 function Gui:addChild(child)
+    child.parent = self
+    child:calculatePercentages()
+
     table.insert(self.children, child)
 end
 
 function Gui:update(dt)
+    self.width = self.game.width
+    self.height = self.game.height
+
     for _, child in ipairs(self.children) do
         child:update(dt)
     end

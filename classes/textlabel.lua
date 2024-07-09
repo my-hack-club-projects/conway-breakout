@@ -8,11 +8,21 @@ function TextLabel:init(x, y, text, fontSize)
     self.fontSize = fontSize or 12
     self.x = x or 0
     self.y = y or 0
+    self.xPercent = 0
+    self.yPercent = 0
 
     self.pressed = false
+    self.parent = nil
 
     self.color = { 1, 1, 1, 1 }
     self.font = love.graphics.newFont(Game.FontName, self.fontSize)
+end
+
+function TextLabel:calculatePercentages()
+    if self.parent then
+        self.xPercent = self.x / self.parent.width
+        self.yPercent = self.y / self.parent.height
+    end
 end
 
 function TextLabel:bindToClick(callback)
@@ -20,6 +30,14 @@ function TextLabel:bindToClick(callback)
 end
 
 function TextLabel:update(dt)
+    self.x = self.parent.width * self.xPercent
+    self.y = self.parent.height * self.yPercent
+    
+    if self.parent then
+        self.x = self.parent.width * self.xPercent
+        self.y = self.parent.height * self.yPercent
+    end
+
     if not self.onClick then
         return
     end

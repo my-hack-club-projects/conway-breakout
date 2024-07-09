@@ -34,9 +34,11 @@ function Play:enter()
     table.insert(self.entities, self.conwayGrid)
     table.insert(self.entities, self.conwayGrid.cells)
 
-    for _, wall in pairs(self.boundary.walls) do
-        table.insert(self.entities, wall)
-    end
+    -- for _, wall in pairs(self.boundary.walls) do
+    --     table.insert(self.entities, wall)
+    -- end
+
+    table.insert(self.entities, self.boundary.walls)
 
     self.update = Play.update
 

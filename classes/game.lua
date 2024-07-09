@@ -30,6 +30,28 @@ function Game:init()
     self.background = love.graphics.newImage('assets/images/bg.png')
     self.font = love.graphics.newFont(Game.FontName, 16)
 
+    self:setupEffects()
+
+    self._onResize = {
+        function(w, h)
+            self:setupEffects()
+        end,
+    }
+
+    love.resize = function(w, h)
+        for _, callback in ipairs(self._onResize) do
+            callback(w, h)
+        end
+    end
+
+    love.graphics.setFont(self.font)
+end
+
+function Game:onResize(callback)
+    table.insert(self._onResize, callback)
+end
+
+function Game:setupEffects()
     self.effect = moonshine(moonshine.effects.filmgrain)
     .chain(moonshine.effects.glow)
     .chain(moonshine.effects.vignette)
@@ -46,8 +68,6 @@ function Game:init()
     self.effect.godsray.decay = 0.9
 
     self.effect.vignette.opacity = 0.2
-
-    love.graphics.setFont(self.font)
 end
 
 function Game:setState(state)
@@ -138,13 +158,16 @@ function Game.audio.play(name)
 end
 
 function Game:update(dt)
+    self.width = love.graphics.getWidth()
+    self.height = love.graphics.getHeight()
+
     if self.state then
         self.state:update(dt)
     end
 end
 
 function Game:render()
-    self.effect(function()
+    local function render()
         love.graphics.setColor(1, 1, 1)
         love.graphics.draw(self.background, 0, 0, 0, self.width / self.background:getWidth(),
             self.height / self.background:getHeight())
@@ -152,7 +175,13 @@ function Game:render()
         if self.state then
             self.state:render()
         end
-    end)
+    end
+
+    if self.effect then
+        self.effect(render)
+    else
+        render()
+    end
 end
 
 return Game
