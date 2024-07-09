@@ -15,13 +15,15 @@ function ConwayCell:init(x, realX, y, realY)
     self.width = ConwayCell.CellSize
     self.height = ConwayCell.CellSize
 
+    self.image = love.graphics.newImage('assets/images/cell.png')
+
     self.update = function() end
 end
 
 function ConwayCell:render()
     if self.alive then
         love.graphics.setColor(1,1,1)
-        love.graphics.rectangle('fill', self.x, self.y, ConwayCell.CellSize, ConwayCell.CellSize)
+        love.graphics.draw(self.image, self.x, self.y, 0, self.width/self.image:getWidth(), self.height/self.image:getHeight())
     end
 end
 
