@@ -16,6 +16,7 @@ function Boundary:init(game)
         wall.isWall = true
 
         wall.render = function()
+            love.graphics.setColor(0,0,0, 0.4)
             love.graphics.rectangle('fill', wall.x, wall.y, wall.width, wall.height)
         end
 
@@ -26,8 +27,9 @@ function Boundary:init(game)
 end
 
 function Boundary:render()
+    love.graphics.setColor(0,0,0, 0.4)
     for _, wall in pairs(self.walls) do
-        love.graphics.rectangle('fill', wall.x, wall.y, wall.width, wall.height)
+        wall.render()
     end
 end
 

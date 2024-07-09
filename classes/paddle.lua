@@ -26,6 +26,7 @@ function Paddle:update(dt)
 end
 
 function Paddle:render()
+    love.graphics.setColor(1,1,1)
     love.graphics.draw(self.image, self.x, self.y, 0, self.width/self.image:getWidth(), self.height/self.image:getHeight()) 
 end
 

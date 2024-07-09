@@ -85,6 +85,7 @@ function Ball:update(dt)
 end
 
 function Ball:render()
+    love.graphics.setColor(1,1,1)
     love.graphics.draw(self.image, self.x, self.y, 0, self.radius*2/self.image:getWidth(), self.radius*2/self.image:getHeight())
 end
 
