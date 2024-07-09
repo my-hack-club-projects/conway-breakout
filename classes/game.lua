@@ -63,8 +63,9 @@ function Game:update(dt)
 end
 
 function Game:render()
+    love.graphics.setColor(1,1,1)
     love.graphics.draw(self.background, 0, 0, 0, self.width/self.background:getWidth(), self.height/self.background:getHeight())
-    
+
     if self.state then
         self.state:render()
     end
