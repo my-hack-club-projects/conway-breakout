@@ -56,22 +56,6 @@ function ConwayGrid:countNeighbors(x, y)
 end
 
 function ConwayGrid:step()
-    -- local newCells = {}
-    -- for i = 1, self.gridWidth do
-    --     newCells[i] = {}
-    --     for j = 1, self.gridHeight do
-    --         local count = self:countNeighbors(i, j)
-
-    --         if self.cells[i][j] then
-    --             newCells[i][j] = count == 2 or count == 3
-    --         else
-    --             newCells[i][j] = count == 3
-    --         end
-    --     end
-    -- end
-
-    -- self.cells = newCells
-
     for i = 1, self.gridWidth do
         for j = 1, self.gridHeight do
             local count = self:countNeighbors(i, j)
@@ -103,19 +87,6 @@ function ConwayGrid:update(dt)
 end
 
 function ConwayGrid:render()
-    -- for i = 1, self.gridWidth do
-    --     for j = 1, self.gridHeight do
-    --         if self.cells[i][j] then
-    --             love.graphics.rectangle('fill', self.x + (i - 1) * ConwayCell.CellSize, self.y + (j - 1) * ConwayCell.CellSize, ConwayCell.CellSize, ConwayCell.CellSize)
-    --         end
-    --     end
-    -- end
-
-    -- for i = 1, self.gridWidth do
-    --     for j = 1, self.gridHeight do
-    --         self.cells[i][j]:render()
-    --     end
-    -- end
 end
 
 return ConwayGrid
