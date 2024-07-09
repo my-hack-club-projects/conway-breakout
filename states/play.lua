@@ -11,6 +11,8 @@ function Play:init(game)
 end
 
 function Play:enter()
+    self.time = 0
+
     self.entities = {}
 
     self.paddle = Paddle.new(self.game.width / 2 - 32, self.game.height - 32, 64, 16)
@@ -35,6 +37,10 @@ end
 
 function Play:exit()
     self.paddle = nil
+    self.ball = nil
+    self.boundary = nil
+    self.conwayGrid = nil
+    self.entities = nil
 end
 
 local function _doForEachEntity(entities, func)
@@ -54,11 +60,20 @@ function Play:update(dt)
         print("game over")
     elseif type(collidedWith) == 'table' and collidedWith.isCell then
         collidedWith.alive = collidedWith.alive and not collidedWith.alive
+
+        if self.conwayGrid:countAliveCells() == 0 then
+            -- player wins
+            print("player wins with time " .. self.time .. " seconds")
+
+            self.game.time = self.time
+        end
     end
 
     _doForEachEntity(self.entities, function(entity)
         entity:update(dt)
     end)
+
+    self.time = self.time + dt
 end
 
 function Play:render()

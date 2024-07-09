@@ -55,6 +55,20 @@ function ConwayGrid:countNeighbors(x, y)
     return count
 end
 
+function ConwayGrid:countAliveCells()
+    local count = 0
+
+    for i = 1, self.gridWidth do
+        for j = 1, self.gridHeight do
+            if self.cells[i][j].alive then
+                count = count + 1
+            end
+        end
+    end
+
+    return count
+end
+
 function ConwayGrid:step()
     for i = 1, self.gridWidth do
         for j = 1, self.gridHeight do

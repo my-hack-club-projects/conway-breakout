@@ -7,7 +7,8 @@ Game.color = {}
 
 function Game:init()
     self.state = nil
-    self.highScore = 0
+    self.time = 0 -- passed by Play state later
+    self.bestTime = 0 -- loaded from file, overriden by self.time if it's higher
 
     self.width = love.graphics.getWidth()
     self.height = love.graphics.getHeight()
