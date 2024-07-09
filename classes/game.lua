@@ -14,7 +14,7 @@ Game.audio = {
         click = {name = 'assets/sounds/click.mp3', type = 'static'},
         lose = {name = 'assets/sounds/lose.mp3', type = 'static'},
         win = {name = 'assets/sounds/win.mp3', type = 'static'},
-        music = {name = 'assets/sounds/music.mp3', type = 'stream'},
+        music = {name = 'assets/sounds/music.mp3', type = 'stream', loop = true},
     },
     sources = {},
 }
@@ -125,6 +125,9 @@ function Game.audio.play(name)
         end
 
         stoppedSource = love.audio.newSource(sound.name, sound.type)
+
+        stoppedSource:setLooping(sound.loop or false)
+        stoppedSource:setVolume(sound.volume or 1)
 
         table.insert(sources, stoppedSource)
     end
