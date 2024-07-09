@@ -13,6 +13,7 @@ Game.audio = {
         destroy = {name = 'assets/sounds/cell_destroy.mp3', type = 'static'},
         click = {name = 'assets/sounds/click.mp3', type = 'static'},
         lose = {name = 'assets/sounds/lose.mp3', type = 'static'},
+        win = {name = 'assets/sounds/win.mp3', type = 'static'},
         music = {name = 'assets/sounds/music.mp3', type = 'stream'},
     },
     sources = {},
@@ -122,7 +123,7 @@ function Game.audio.play(name)
         if not sound then
             error('Sound not found: ' .. name)
         end
-        
+
         stoppedSource = love.audio.newSource(sound.name, sound.type)
 
         table.insert(sources, stoppedSource)

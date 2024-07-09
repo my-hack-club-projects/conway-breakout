@@ -77,7 +77,8 @@ function Play:update(dt)
         self.destroyedCells = self.destroyedCells + 1
 
         if self.conwayGrid:countAliveCells() == 0 then
-            -- TODO: success sound
+            self.game.audio.play('win')
+            
             self.success = true
             self.game:setState(GameOverState.new(self.game))
         end
