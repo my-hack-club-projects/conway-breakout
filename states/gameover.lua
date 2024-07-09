@@ -47,6 +47,12 @@ end
 
 function GameOver:update(dt)
     self.gui:update(dt)
+
+    if love.keyboard.isDown('escape') then
+        love.event.quit()
+    elseif love.keyboard.isDown('return') then
+        self.game:setState(self.previousState)
+    end
 end
 
 function GameOver:render()

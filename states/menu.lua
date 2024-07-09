@@ -29,6 +29,12 @@ end
 
 function MainMenu:update(dt)
     self.gui:update(dt)
+
+    if love.keyboard.isDown('escape') then
+        love.event.quit()
+    elseif love.keyboard.isDown('return') then
+        self.game:setState((require 'states.play').new(self.game))
+    end
 end
 
 function MainMenu:render()
