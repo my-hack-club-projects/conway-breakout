@@ -2,6 +2,8 @@ local oo = require 'lib.oo'
 
 local Game = oo.class()
 
+Game.FontName = 'assets/fonts/PressStart2P.ttf'
+
 Game.collision = {}
 Game.color = {}
 
@@ -14,7 +16,7 @@ function Game:init()
     self.height = love.graphics.getHeight()
 
     self.background = love.graphics.newImage('assets/images/bg.png')
-    self.font = love.graphics.newFont('assets/fonts/PressStart2P.ttf', 16)
+    self.font = love.graphics.newFont(Game.FontName, 16)
 
     love.graphics.setFont(self.font)
 end

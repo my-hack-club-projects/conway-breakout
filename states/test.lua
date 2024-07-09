@@ -1,5 +1,7 @@
 local oo = require 'lib.oo'
 local State = require 'classes.state'
+local Gui = require 'classes.gui'
+local TextLabel = require 'classes.textlabel'
 
 local Test = oo.class(State)
 
@@ -7,6 +9,15 @@ function Test:init(game)
     assert(game, 'Test state requires a game object')
 
     State.init(self, 'Test', game)
+
+    self.gui = Gui.new(game)
+
+    self.label = TextLabel.new(game.width / 2, game.height / 2, 'Test', 32)
+    self.label:bindToClick(function()
+        print('Clicked!')
+    end)
+
+    self.gui:addChild(self.label)
 
     self.elapsed = 0
 end
@@ -24,9 +35,9 @@ function Test:exit()
 end
 
 function Test:update(dt)
-    print('Updating Test state')
-
     self.elapsed = self.elapsed + dt
+
+    self.label.text = string.format('Test: %.2f', self.elapsed)
 
     if love.keyboard.isDown('escape') then
         self.game:setState(nil)
@@ -36,10 +47,7 @@ function Test:update(dt)
 end
 
 function Test:render()
-    print('Rendering Test state')
-
-    love.graphics.print('Test state', 10, 10)
-    love.graphics.print('Elapsed time: ' .. self.elapsed, 10, 30)
+    self.gui:render()
 end
 
 return Test
