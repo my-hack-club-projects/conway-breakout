@@ -21,7 +21,7 @@ function Boundary:initializeWalls()
     for i, v in ipairs(self.walls) do
         self.walls[i] = nil
     end
-    
+
     table.insert(self.walls, { side = 'top', x = 0, y = 0, width = self.game.width, height = THICKNESS })
     table.insert(self.walls, { side = 'bottom', x = 0, y = self.game.height - THICKNESS, width = self.game.width, height = THICKNESS })
     table.insert(self.walls, { side = 'left', x = 0, y = 0, width = THICKNESS, height = self.game.height })
