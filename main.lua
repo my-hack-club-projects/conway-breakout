@@ -53,10 +53,10 @@
 
 local Game = require 'classes.game'
 
-local INITIAL_STATE = require 'states.test'
+local INITIAL_STATE = require 'states.menu'
 
 function love.load()
-    love.window.setTitle('Breakout of Life')
+    love.window.setTitle("Conwa's Breakout")
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
