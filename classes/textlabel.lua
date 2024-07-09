@@ -20,6 +20,10 @@ function TextLabel:bindToClick(callback)
 end
 
 function TextLabel:update(dt)
+    if not self.onClick then
+        return
+    end
+
     local mx, my = love.mouse.getPosition()
     local w, h = self.font:getWidth(self.text), self.font:getHeight()
 
@@ -31,9 +35,7 @@ function TextLabel:update(dt)
         elseif not love.mouse.isDown(1) and self.pressed then
             self.pressed = false
 
-            if self.onClick then
-                self.onClick()
-            end
+            self.onClick()
         end
     else
         self.color = { 1, 1, 1, 1 }
