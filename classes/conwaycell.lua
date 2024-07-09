@@ -30,20 +30,22 @@ function ConwayCell:render()
 
         --- Draw an outline on each edge that has no neighbors
         love.graphics.setColor(Game.color.hex2color('4c4c65'))
-        if self.gridX == 1 or not self.otherCells[self.gridX - 1][self.gridY].alive then
-            love.graphics.line(self.x, self.y, self.x, self.y + self.height)
-        end
 
-        if self.gridX == #self.otherCells or not self.otherCells[self.gridX + 1][self.gridY].alive then
-            love.graphics.line(self.x + self.width, self.y, self.x + self.width, self.y + self.height)
-        end
+        local neighbors = {
+            {position = {self.gridX - 1, self.gridY}, edge = {{0, 0}, {0, 1}}}, -- left
+            {position = {self.gridX + 1, self.gridY}, edge = {{1, 0}, {1, 1}}}, -- right
+            {position = {self.gridX, self.gridY - 1}, edge = {{0, 0}, {1, 0}}}, -- top
+            {position = {self.gridX, self.gridY + 1}, edge = {{0, 1}, {1, 1}}}, -- bottom
+        }
 
-        if self.gridY == 1 or not self.otherCells[self.gridX][self.gridY - 1].alive then
-            love.graphics.line(self.x, self.y, self.x + self.width, self.y)
-        end
+        for _, neighbor in ipairs(neighbors) do
+            local nx, ny = neighbor.position[1], neighbor.position[2]
+            if nx < 1 or nx > #self.otherCells or ny < 1 or ny > #self.otherCells[1] or not self.otherCells[nx][ny].alive then
+                local x1, y1 = self.x + neighbor.edge[1][1] * self.width, self.y + neighbor.edge[1][2] * self.height
+                local x2, y2 = self.x + neighbor.edge[2][1] * self.width, self.y + neighbor.edge[2][2] * self.height
 
-        if self.gridY == #self.otherCells[1] or not self.otherCells[self.gridX][self.gridY + 1].alive then
-            love.graphics.line(self.x, self.y + self.height, self.x + self.width, self.y + self.height)
+                love.graphics.line(x1, y1, x2, y2)
+            end
         end
     end
 end
