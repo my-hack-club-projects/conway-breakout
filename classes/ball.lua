@@ -11,7 +11,7 @@ function Ball:init(x, y, radius)
     self.radius = radius or 0
 
     self.velocity = { x = 0, y = 0 }
-    self.speedInheritance = 0.2
+    self.speedInheritance = 0.05
     self.drag = 0.07
     self.gravity = 125
 
