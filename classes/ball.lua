@@ -3,6 +3,8 @@ local Game = require 'classes.game' -- used for collision detection
 
 local Ball = oo.class()
 
+Ball.TrailLength = 10
+
 local DEBOUNCE = 0.0
 
 function Ball:init(x, y, radius)
@@ -19,6 +21,8 @@ function Ball:init(x, y, radius)
     self.isBall = true
 
     self.debounce = {}
+
+    self.previousPositions = {}
 end
 
 function Ball:bounce(axis)
@@ -82,11 +86,37 @@ function Ball:update(dt)
     self.velocity.y = self.velocity.y + self.gravity * dt
     self.x = self.x + self.velocity.x * dt
     self.y = self.y + self.velocity.y * dt
+
+    table.insert(self.previousPositions, 1, {x = self.x, y = self.y})
+
+    if #self.previousPositions > Ball.TrailLength then
+        table.remove(self.previousPositions)
+    end
+end
+
+local function ipairs_reverse(t)
+    local i = #t + 1
+    return function()
+        i = i - 1
+        if i > 0 then
+            return i, t[i]
+        end
+    end
 end
 
 function Ball:render()
-    love.graphics.setColor(1,1,1)
-    love.graphics.draw(self.image, self.x, self.y, 0, self.radius*2/self.image:getWidth(), self.radius*2/self.image:getHeight())
+    for i, pos in ipairs_reverse(self.previousPositions) do
+        local radius = self.radius
+        local alpha = ((Ball.TrailLength - i + 1) / Ball.TrailLength) * 0.2
+
+        if i == 1 then
+            love.graphics.setColor(0.7, 0.9, 1)
+        else
+            love.graphics.setColor(0.1, 0.5, 1, alpha)
+        end
+        
+        love.graphics.draw(self.image, pos.x, pos.y, 0, radius*2/self.image:getWidth(), radius*2/self.image:getHeight())
+    end
 end
 
 return Ball
