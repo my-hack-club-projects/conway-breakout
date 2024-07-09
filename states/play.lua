@@ -26,6 +26,7 @@ function Play:enter()
     table.insert(self.entities, self.paddle)
     table.insert(self.entities, self.ball)
     table.insert(self.entities, self.conwayGrid)
+    table.insert(self.entities, self.conwayGrid.cells)
 
     for _, wall in pairs(self.boundary.walls) do
         table.insert(self.entities, wall)
@@ -36,22 +37,32 @@ function Play:exit()
     self.paddle = nil
 end
 
+local function _doForEachEntity(entities, func)
+    for _, entity in ipairs(entities) do
+        if entity.render and entity.update then
+            func(entity)
+        else
+            _doForEachEntity(entity, func)
+        end
+    end
+end
+
 function Play:update(dt)
     local collidedWith = self.ball:check(self.entities)
-    
+
     if collidedWith == 'bottom' then
         print("game over")
     end
 
-    for _, entity in ipairs(self.entities) do
+    _doForEachEntity(self.entities, function(entity)
         entity:update(dt)
-    end
+    end)
 end
 
 function Play:render()
-    for _, entity in ipairs(self.entities) do
+    _doForEachEntity(self.entities, function(entity)
         entity:render()
-    end
+    end)
 end
 
 return Play

@@ -29,6 +29,7 @@ end
 function Ball:check(entities)
     for _, entity in ipairs(entities) do
         if not entity.width or not entity.height then goto continue end
+        if entity.skipCollision == true then goto continue end
         if os.time() - (self.debounce[entity] or 0) < DEBOUNCE then goto continue end
 
         if not Game.collision.circleRectangle(self.x, self.y, self.radius, entity.x, entity.y, entity.width, entity.height) then goto continue end

@@ -24,6 +24,8 @@ function ConwayGrid:init(x, y, width, height)
     end
 
     self:randomize()
+
+    self.skipCollision = true
 end
 
 function ConwayGrid:countNeighbors(x, y)
@@ -109,11 +111,11 @@ function ConwayGrid:render()
     --     end
     -- end
 
-    for i = 1, self.gridWidth do
-        for j = 1, self.gridHeight do
-            self.cells[i][j]:render()
-        end
-    end
+    -- for i = 1, self.gridWidth do
+    --     for j = 1, self.gridHeight do
+    --         self.cells[i][j]:render()
+    --     end
+    -- end
 end
 
 return ConwayGrid

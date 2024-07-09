@@ -12,6 +12,8 @@ function ConwayCell:init(x, realX, y, realY)
     self.alive = false
 
     self.isCell = true
+
+    self.update = function() end
 end
 
 function ConwayCell:render()
