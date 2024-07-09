@@ -28,33 +28,30 @@ end
 
 function Ball:check(entities)
     for _, entity in ipairs(entities) do
-        if entity.width and entity.height then
-            if os.time() - (self.debounce[entity] or 0) < DEBOUNCE then
-                goto continue
-            end
+        if not entity.width or not entity.height then goto continue end
+        if os.time() - (self.debounce[entity] or 0) < DEBOUNCE then goto continue end
 
-            if Game.collision.circleRectangle(self.x, self.y, self.radius, entity.x, entity.y, entity.width, entity.height) then
-                self.debounce[entity] = os.time()
+        if not Game.collision.circleRectangle(self.x, self.y, self.radius, entity.x, entity.y, entity.width, entity.height) then goto continue end
 
-                if entity.isWall and entity.side == "bottom" then
-                    return "bottom"
-                end
+        self.debounce[entity] = os.time()
 
-                local dx = self.x - entity.x
-                local dy = self.y - entity.y
+        if entity.isWall and entity.side == "bottom" then
+            return "bottom"
+        end
 
-                if math.abs(dx) > math.abs(dy) then
-                    self:bounce('y')
-                else
-                    self:bounce('x')
-                end
+        local dx = self.x - entity.x
+        local dy = self.y - entity.y
 
-                if entity.isPaddle then
-                    self.velocity.x = self.velocity.x + (entity.speed * entity.direction) * self.speedInheritance
-                elseif entity.isCell then
-                    entity:destroy()
-                end
-            end
+        if math.abs(dx) > math.abs(dy) then
+            self:bounce('y')
+        else
+            self:bounce('x')
+        end
+
+        if entity.isPaddle then
+            self.velocity.x = self.velocity.x + (entity.speed * entity.direction) * self.speedInheritance
+        elseif entity.isCell then
+            entity:destroy()
         end
 
         ::continue::

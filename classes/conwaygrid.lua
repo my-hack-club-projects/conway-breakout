@@ -1,8 +1,8 @@
 local oo = require 'lib.oo'
+local ConwayCell = require 'classes.conwaycell'
 
 local ConwayGrid = oo.class()
 
-ConwayGrid.CellSize = 32
 ConwayGrid.StepInterval = 1
 
 function ConwayGrid:init(x, y, width, height)
@@ -12,14 +12,14 @@ function ConwayGrid:init(x, y, width, height)
     self.height = height or 0
     self.lastStep = 0
 
-    self.gridWidth = math.floor(self.width / self.CellSize)
-    self.gridHeight = math.floor(self.height / self.CellSize)
+    self.gridWidth = math.floor(self.width / ConwayCell.CellSize)
+    self.gridHeight = math.floor(self.height / ConwayCell.CellSize)
 
     self.cells = {}
     for i = 1, self.gridWidth do
         self.cells[i] = {}
         for j = 1, self.gridHeight do
-            self.cells[i][j] = false
+            self.cells[i][j] = ConwayCell.new(i, self.x + (i - 1) * ConwayCell.CellSize, j, self.y + (j - 1) * ConwayCell.CellSize)
         end
     end
 
@@ -42,7 +42,7 @@ function ConwayGrid:countNeighbors(x, y)
                 goto continue
             end
 
-            if self.cells[nx][ny] then
+            if self.cells[nx][ny].alive then
                 count = count + 1
             end
 
@@ -54,27 +54,39 @@ function ConwayGrid:countNeighbors(x, y)
 end
 
 function ConwayGrid:step()
-    local newCells = {}
+    -- local newCells = {}
+    -- for i = 1, self.gridWidth do
+    --     newCells[i] = {}
+    --     for j = 1, self.gridHeight do
+    --         local count = self:countNeighbors(i, j)
+
+    --         if self.cells[i][j] then
+    --             newCells[i][j] = count == 2 or count == 3
+    --         else
+    --             newCells[i][j] = count == 3
+    --         end
+    --     end
+    -- end
+
+    -- self.cells = newCells
+
     for i = 1, self.gridWidth do
-        newCells[i] = {}
         for j = 1, self.gridHeight do
             local count = self:countNeighbors(i, j)
 
-            if self.cells[i][j] then
-                newCells[i][j] = count == 2 or count == 3
+            if self.cells[i][j].alive then
+                self.cells[i][j].alive = count == 2 or count == 3
             else
-                newCells[i][j] = count == 3
+                self.cells[i][j].alive = count == 3
             end
         end
     end
-
-    self.cells = newCells
 end
 
 function ConwayGrid:randomize()
     for i = 1, self.gridWidth do
         for j = 1, self.gridHeight do
-            self.cells[i][j] = math.random() > 0.5
+            self.cells[i][j].alive = math.random() > 0.5
         end
     end
 end
@@ -89,11 +101,17 @@ function ConwayGrid:update(dt)
 end
 
 function ConwayGrid:render()
+    -- for i = 1, self.gridWidth do
+    --     for j = 1, self.gridHeight do
+    --         if self.cells[i][j] then
+    --             love.graphics.rectangle('fill', self.x + (i - 1) * ConwayCell.CellSize, self.y + (j - 1) * ConwayCell.CellSize, ConwayCell.CellSize, ConwayCell.CellSize)
+    --         end
+    --     end
+    -- end
+
     for i = 1, self.gridWidth do
         for j = 1, self.gridHeight do
-            if self.cells[i][j] then
-                love.graphics.rectangle('fill', self.x + (i - 1) * self.CellSize, self.y + (j - 1) * self.CellSize, self.CellSize, self.CellSize)
-            end
+            self.cells[i][j]:render()
         end
     end
 end
