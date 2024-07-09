@@ -26,6 +26,8 @@ function Play:init(game)
 end
 
 function Play:enter()
+    math.randomseed(os.time())
+
     self.time = 0
     self.success = false
     self.destroyedCells = 0
@@ -37,7 +39,8 @@ function Play:enter()
     self.paddle.speed = Play.PaddleSpeed
     self.paddle.accel = Play.PaddleAccel
     self.ball = Ball.new(self.game.width / 2 + Play.BallSpawnPositionOffset.x - Play.BallRadius, self.game.height - Play.PaddleOffset + Play.BallSpawnPositionOffset.y - Play.BallRadius, Play.BallRadius)
-    self.ball.velocity = Play.BallSpawnVelocity
+    self.ball.velocity.x = Play.BallSpawnVelocity.x
+    self.ball.velocity.y = Play.BallSpawnVelocity.y
 
     self.boundary = Boundary.new(self.game)
 
