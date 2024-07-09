@@ -3,7 +3,7 @@ local Game = require 'classes.game'
 
 local ConwayCell = oo.class()
 
-ConwayCell.CellSize = 32
+ConwayCell.CellSize = 24
 
 function ConwayCell:init(x, realX, y, realY, cells)
     self.otherCells = cells

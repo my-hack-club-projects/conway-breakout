@@ -21,7 +21,7 @@ function Play:enter()
     self.ball.velocity = { x = 0, y = 200 }
 
     self.boundary = Boundary.new(self.game)
-    self.conwayGrid = ConwayGrid.new(0, 0, self.game.width, self.game.height / 2)
+    self.conwayGrid = ConwayGrid.new(self.game.width / 12, self.game.height / 8, self.game.width - self.game.width / 12 * 2, self.game.height / 2)
 
     table.insert(self.entities, self.paddle)
     table.insert(self.entities, self.ball)
