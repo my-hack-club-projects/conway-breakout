@@ -39,10 +39,14 @@ function Play:enter()
     end
 
     self.update = Play.update
+
+    self.music = self.game.audio.play("music")
 end
 
 function Play:exit()
     self.update = function() end
+    self.music:stop()
+    self.music = nil
 end
 
 function Play:cleanup()
@@ -71,6 +75,7 @@ function Play:update(dt)
 
     if collidedWith == 'bottom' then
         self.game.audio.play('lose')
+
         self.game:setState(GameOverState.new(self.game))
     elseif type(collidedWith) == 'table' and collidedWith.isCell then
         collidedWith.alive = collidedWith.alive and not collidedWith.alive
@@ -78,7 +83,7 @@ function Play:update(dt)
 
         if self.conwayGrid:countAliveCells() == 0 then
             self.game.audio.play('win')
-            
+
             self.success = true
             self.game:setState(GameOverState.new(self.game))
         end

@@ -14,7 +14,7 @@ Game.audio = {
         click = {name = 'assets/sounds/click.mp3', type = 'static'},
         lose = {name = 'assets/sounds/lose.mp3', type = 'static'},
         win = {name = 'assets/sounds/win.mp3', type = 'static'},
-        music = {name = 'assets/sounds/music.mp3', type = 'stream', loop = true},
+        music = {name = 'assets/sounds/music.mp3', type = 'stream', loop = true, volume = 0.3},
     },
     sources = {},
 }
