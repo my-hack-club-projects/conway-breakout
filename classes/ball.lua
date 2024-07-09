@@ -15,6 +15,7 @@ function Ball:init(x, y, radius)
     self.drag = 0.15
     self.gravity = 50
 
+    self.image = love.graphics.newImage('assets/images/ball.png')
     self.isBall = true
 
     self.debounce = {}
@@ -84,7 +85,7 @@ function Ball:update(dt)
 end
 
 function Ball:render()
-    love.graphics.circle('fill', self.x, self.y, self.radius)
+    love.graphics.draw(self.image, self.x, self.y, 0, self.radius*2/self.image:getWidth(), self.radius*2/self.image:getHeight())
 end
 
 return Ball

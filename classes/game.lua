@@ -7,9 +7,11 @@ Game.collision = {}
 function Game:init()
     self.state = nil
     self.highScore = 0
-    
+
     self.width = love.graphics.getWidth()
     self.height = love.graphics.getHeight()
+    
+    self.background = love.graphics.newImage('assets/images/bg.png')
 end
 
 function Game:setState(state)
@@ -61,6 +63,8 @@ function Game:update(dt)
 end
 
 function Game:render()
+    love.graphics.draw(self.background, 0, 0, 0, self.width/self.background:getWidth(), self.height/self.background:getHeight())
+    
     if self.state then
         self.state:render()
     end
