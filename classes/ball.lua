@@ -4,6 +4,7 @@ local Game = require 'classes.game' -- used for collision detection
 local Ball = oo.class()
 
 Ball.TrailLength = 10
+Ball.PaddleBounce = 5
 
 local DEBOUNCE = 0.0
 
@@ -65,6 +66,7 @@ function Ball:check(entities)
                 if entity.isPaddle then
                     self.velocity.x = self.velocity.x + (entity.velocity) * self.speedInheritance
                     self.velocity.y = -math.abs(self.velocity.y) -- always bounce off of the paddle
+                    self.velocity.y = self.velocity.y - Ball.PaddleBounce
                 elseif entity.isCell then
                     return entity
                 end
