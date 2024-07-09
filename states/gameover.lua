@@ -1,4 +1,5 @@
 local oo = require 'lib.oo'
+local moonshine = require 'lib.moonshine'
 local State = require 'classes.state'
 local Gui, TextLabel = require 'classes.gui', require 'classes.textlabel'
 
@@ -10,6 +11,8 @@ function GameOver:init(game)
     State.init(self, 'GameOver', game)
 
     self.previousState = nil
+
+    self.effect = moonshine(moonshine.effects.gaussianblur)
 end
 
 function GameOver:enter(previousState)
@@ -50,7 +53,9 @@ function GameOver:update(dt)
 end
 
 function GameOver:render()
-    self.previousState:render() -- TODO: blur this layer, for now, just add a dark overlay
+    self.effect(function()
+        self.previousState:render()
+    end)
 
     love.graphics.setColor(0, 0, 0, 0.5)
     love.graphics.rectangle('fill', 0, 0, self.game.width, self.game.height)
