@@ -17,8 +17,22 @@ function GameOver:enter(previousState)
 
     self.gui = Gui.new(self.game)
 
-    local label = TextLabel.new(self.game.width / 2, self.game.height / 2, 'Game Over', 32)
+    local label = TextLabel.new(self.game.width / 2, self.game.height / 3, 'Game Over!', 32)
     self.gui:addChild(label)
+
+    local time = TextLabel.new(self.game.width / 2, self.game.height / 3 + 32, string.format('Your time: %.2f', self.previousState.time), 16)
+    self.gui:addChild(time)
+
+    local bestTime = TextLabel.new(self.game.width / 2, self.game.height / 3 + 52, string.format('Best time: %.2f', self.game.bestTime), 16)
+    self.gui:addChild(bestTime)
+
+    local button = TextLabel.new(self.game.width / 2, self.game.height / 3 * 2, 'Retry?', 16)
+
+    button:bindToClick(function()
+        self.game:setState(self.previousState)
+    end)
+
+    self.gui:addChild(button)
 end
 
 function GameOver:exit()
@@ -27,14 +41,13 @@ end
 
 function GameOver:update(dt)
     self.gui:update(dt)
-
-    if love.keyboard.isDown('return') then
-        self.game:setState(self.previousState)
-    end
 end
 
 function GameOver:render()
-    self.previousState:render()
+    self.previousState:render() -- TODO: blur this layer, for now, just add a dark overlay
+
+    love.graphics.setColor(0, 0, 0, 0.5)
+    love.graphics.rectangle('fill', 0, 0, self.game.width, self.game.height)
 
     self.gui:render()
 end
