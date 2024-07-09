@@ -19,13 +19,26 @@ function ConwayGrid:init(x, y, width, height)
     for i = 1, self.gridWidth do
         self.cells[i] = {}
         for j = 1, self.gridHeight do
-            self.cells[i][j] = ConwayCell.new(i, self.x + (i - 1) * ConwayCell.CellSize, j, self.y + (j - 1) * ConwayCell.CellSize, self.cells)
+            -- self.cells[i][j] = ConwayCell.new(i, self.x + (i - 1) * ConwayCell.CellSize, j, self.y + (j - 1) * ConwayCell.CellSize, self.cells)
+            -- the above line works when self.x and self.y are the top-left corner of the grid. The following line works when self.x and self.y are the center of the grid
+
+            self.cells[i][j] = ConwayCell.new(i, self.x - (self.gridWidth / 2) * ConwayCell.CellSize + (i - 1) * ConwayCell.CellSize, j, self.y - (self.gridHeight / 2) * ConwayCell.CellSize + (j - 1) * ConwayCell.CellSize, self.cells)
         end
     end
 
     self:randomize()
 
     self.skipCollision = true
+end
+
+function ConwayGrid:refresh()
+    -- the cells are created using this: ConwayCell.new(i, self.x + (i - 1) * ConwayCell.CellSize, j, self.y + (j - 1) * ConwayCell.CellSize, self.cells), where i and j are grid coords and x and y are screen coords
+    for i = 1, self.gridWidth do
+        for j = 1, self.gridHeight do
+            self.cells[i][j].x = self.x - (self.gridWidth / 2) * ConwayCell.CellSize + (i - 1) * ConwayCell.CellSize
+            self.cells[i][j].y = self.y - (self.gridHeight / 2) * ConwayCell.CellSize + (j - 1) * ConwayCell.CellSize
+        end
+    end
 end
 
 function ConwayGrid:countNeighbors(x, y)

@@ -15,6 +15,10 @@ Play.BallRadius = 8
 Play.BallSpawnPositionOffset = { x = 0, y = -150 }
 Play.BallSpawnVelocity = { x = 0, y = 200 }
 
+Play.GridSpacingFractionY = 8
+Play.GridSizeFractionY = 2
+Play.GridAspectRatio = 2
+
 function Play:init(game)
     assert(game, 'Play state requires a game object')
 
@@ -36,7 +40,11 @@ function Play:enter()
     self.ball.velocity = Play.BallSpawnVelocity
 
     self.boundary = Boundary.new(self.game)
-    self.conwayGrid = ConwayGrid.new(self.game.width / 12, self.game.height / 8, self.game.width - self.game.width / 12 * 2, self.game.height / 2)
+
+    local gridHeight = self.game.height / Play.GridSizeFractionY
+    local gridWidth = gridHeight * Play.GridAspectRatio
+
+    self.conwayGrid = ConwayGrid.new(self.game.width / 2, self.game.height / Play.GridSpacingFractionY + gridHeight / 2, gridWidth, gridHeight)
 
     table.insert(self.entities, self.paddle)
     table.insert(self.entities, self.ball)
@@ -70,6 +78,16 @@ function Play:reinitializePositions(w, h)
 
     self.ball.x = w * xPercentageBall - Play.BallRadius
     self.ball.y = h * yPercentageBall - Play.BallRadius
+
+    local gridHeight = h / Play.GridSizeFractionY
+    local gridWidth = gridHeight * Play.GridAspectRatio
+
+    self.conwayGrid.x = w / 2
+    self.conwayGrid.y = h / Play.GridSpacingFractionY + gridHeight / 2
+    self.conwayGrid.width = gridWidth
+    self.conwayGrid.height = gridHeight
+
+    self.conwayGrid:refresh()
 end
 
 function Play:exit()
