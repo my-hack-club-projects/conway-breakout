@@ -28,6 +28,8 @@ function Game:setState(state)
         assert(state.update, 'State must have an update method')
         assert(state.render, 'State must have a render method')
     end
+    
+    local prevState = self.state
     if self.state then
         self.state:exit()
     end
@@ -36,7 +38,7 @@ function Game:setState(state)
 
     if not state then return end
 
-    self.state:enter()
+    self.state:enter(prevState)
 end
 
 function Game.collision.aabb(x1, y1, w1, h1, x2, y2, w2, h2)
