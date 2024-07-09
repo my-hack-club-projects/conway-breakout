@@ -21,8 +21,8 @@ function Play:enter()
 
     self.paddle = Paddle.new(self.game.width / 2 - 32, self.game.height - 38, 64, 16)
     self.paddle.minX, self.paddle.maxX = 0, self.game.width - self.paddle.width
-    self.paddle.speed = 2500
-
+    self.paddle.speed = 2000
+    self.paddle.accel = 50
     self.ball = Ball.new(self.game.width / 2, self.game.height / 3 * 2, 8)
     self.ball.velocity = { x = 0, y = 200 }
 

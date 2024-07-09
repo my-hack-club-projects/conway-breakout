@@ -12,7 +12,9 @@ function Paddle:init(x, y, width, height)
     self.width = width or 0
     self.height = height or 0
     self.rotation = 0
-    self.maxRotation = math.pi/16
+    self.maxRotation = math.pi/8
+    self.rotationReturnSpeed = 1
+    self.rotationSpeed = 2
 
     self.minX = 0
     self.maxX = 0
@@ -30,10 +32,10 @@ end
 function Paddle:update(dt)
     self.direction = (love.keyboard.isDown('a') and -1 or 0) + (love.keyboard.isDown('d') and 1 or 0)
 
-    self.rotation = self.rotation + math.sin(self.rotation + self.direction) * dt
-    self.rotation = self.rotation * 0.9 
+    self.rotation = self.rotation + self.direction * (self.maxRotation - math.abs(self.rotation)) * self.rotationSpeed * dt
+    self.rotation = self.rotation * (1 - dt * self.rotationReturnSpeed)
 
-    self.targetVelocity = math.sin(self.rotation) * self.speed * 100 * dt
+    self.targetVelocity = math.sin(self.rotation) * self.speed
     self.velocity = self.velocity + (self.targetVelocity - self.velocity) * dt * self.accel
     self.x = self.x + self.velocity * dt
 
