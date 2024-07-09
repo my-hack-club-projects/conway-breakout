@@ -3,7 +3,7 @@ local Game = require 'classes.game' -- used for collision detection
 
 local Ball = oo.class()
 
-local DEBOUNCE = 0.0
+local DEBOUNCE = 0.05
 
 function Ball:init(x, y, radius)
     self.x = x or 0
@@ -43,17 +43,23 @@ function Ball:check(entities)
                     return "bottom"
                 end
 
-                local dx = self.x - entity.x
-                local dy = self.y - entity.y
+                local closestX = math.max(entity.x, math.min(self.x, entity.x + entity.width))
+                local closestY = math.max(entity.y, math.min(self.y, entity.y + entity.height))
 
-                if math.abs(dx) > math.abs(dy) then
-                    self:bounce('y')
-                else
-                    self:bounce('x')
+                local dx = self.x - closestX
+                local dy = self.y - closestY
+
+                if dx^2 + dy^2 < self.radius^2 then
+                    if dx^2 > dy^2 then
+                        self:bounce('x')
+                    else
+                        self:bounce('y')
+                    end
                 end
 
                 if entity.isPaddle then
                     self.velocity.x = self.velocity.x + (entity.speed * entity.direction) * self.speedInheritance
+                    self.velocity.y = -math.abs(self.velocity.y) -- always bounce off of the paddle
                 elseif entity.isCell then
                     return entity
                 end
