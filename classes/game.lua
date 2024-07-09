@@ -12,8 +12,11 @@ function Game:init()
 
     self.width = love.graphics.getWidth()
     self.height = love.graphics.getHeight()
-    
+
     self.background = love.graphics.newImage('assets/images/bg.png')
+    self.font = love.graphics.newFont('assets/fonts/PressStart2P.ttf', 16)
+
+    love.graphics.setFont(self.font)
 end
 
 function Game:setState(state)

@@ -80,6 +80,14 @@ function Play:render()
     _doForEachEntity(self.entities, function(entity)
         entity:render()
     end)
+
+    -- render timer - needs to be processed MM:SS
+    love.graphics.setColor(1, 1, 1)
+
+    local text = string.format("%02d:%02d", math.floor(self.time / 60), math.floor(self.time % 60))
+    local xSize = love.graphics.getFont():getWidth(text)
+
+    love.graphics.print(text, self.game.width - xSize - 10, 10)
 end
 
 return Play
