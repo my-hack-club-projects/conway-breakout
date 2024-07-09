@@ -18,7 +18,7 @@ function Paddle:init(x, y, width, height)
     self.maxX = 0
 
     self.speed = 1
-    self.accel = 5
+    self.accel = 10
     self.targetVelocity = 0
     self.velocity = 0
     self.direction = 0
