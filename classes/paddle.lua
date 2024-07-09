@@ -30,11 +30,9 @@ end
 function Paddle:update(dt)
     self.direction = (love.keyboard.isDown('a') and -1 or 0) + (love.keyboard.isDown('d') and 1 or 0)
 
-    -- Rotate the paddle towards the direction it's moving. The rotation should be smooth (sinusoidal) and never exceed the max rotation. There should be resistance to rotation, so the paddle should return to its original position when no keys are pressed.
     self.rotation = self.rotation + math.sin(self.rotation + self.direction) * dt
-    self.rotation = self.rotation * 0.9 -- Apply resistance to rotation
+    self.rotation = self.rotation * 0.9 
 
-    -- Move the object depending on the rotation, as if it had real thrusters
     self.targetVelocity = math.sin(self.rotation) * self.speed * 100 * dt
     self.velocity = self.velocity + (self.targetVelocity - self.velocity) * dt * self.accel
     self.x = self.x + self.velocity * dt
