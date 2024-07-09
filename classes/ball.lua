@@ -13,7 +13,7 @@ function Ball:init(x, y, radius)
     self.radius = radius or 0
 
     self.velocity = { x = 0, y = 0 }
-    self.speedInheritance = 0.05
+    self.speedInheritance = 0.5
     self.drag = 0.07
     self.gravity = 125
 
@@ -63,7 +63,7 @@ function Ball:check(entities)
                 end
 
                 if entity.isPaddle then
-                    self.velocity.x = self.velocity.x + (entity.speed * entity.direction) * self.speedInheritance
+                    self.velocity.x = self.velocity.x + (entity.velocity) * self.speedInheritance
                     self.velocity.y = -math.abs(self.velocity.y) -- always bounce off of the paddle
                 elseif entity.isCell then
                     return entity
