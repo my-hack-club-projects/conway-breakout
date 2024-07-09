@@ -19,7 +19,7 @@ function ConwayGrid:init(x, y, width, height)
     for i = 1, self.gridWidth do
         self.cells[i] = {}
         for j = 1, self.gridHeight do
-            self.cells[i][j] = ConwayCell.new(i, self.x + (i - 1) * ConwayCell.CellSize, j, self.y + (j - 1) * ConwayCell.CellSize)
+            self.cells[i][j] = ConwayCell.new(i, self.x + (i - 1) * ConwayCell.CellSize, j, self.y + (j - 1) * ConwayCell.CellSize, self.cells)
         end
     end
 
