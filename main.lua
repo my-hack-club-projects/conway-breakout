@@ -63,7 +63,7 @@ function love.load()
     love.window.setMode(640, 480, {
         fullscreen = false,
         resizable = true,
-        vsync = true
+        vsync = false
     })
 
     local game = Game.new()
