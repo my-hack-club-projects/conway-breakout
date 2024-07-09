@@ -6,6 +6,15 @@ local Paddle, Ball, Boundary, ConwayGrid = require 'classes.paddle', require 'cl
 
 local Play = oo.class(State)
 
+Play.PaddleSize = { width = 64, height = 16 }
+Play.PaddleOffset = 38
+Play.PaddleSpeed = 2000
+Play.PaddleAccel = 50
+
+Play.BallRadius = 8
+Play.BallSpawnPositionOffset = { x = 0, y = -150 }
+Play.BallSpawnVelocity = { x = 0, y = 200 }
+
 function Play:init(game)
     assert(game, 'Play state requires a game object')
 
@@ -19,12 +28,12 @@ function Play:enter()
 
     self.entities = {}
 
-    self.paddle = Paddle.new(self.game.width / 2 - 32, self.game.height - 38, 64, 16)
+    self.paddle = Paddle.new(self.game.width / 2 - Play.PaddleSize.width / 2, self.game.height - Play.PaddleOffset, Play.PaddleSize.width, Play.PaddleSize.height)
     self.paddle.minX, self.paddle.maxX = 0, self.game.width - self.paddle.width
-    self.paddle.speed = 2000
-    self.paddle.accel = 50
-    self.ball = Ball.new(self.game.width / 2, self.game.height / 3 * 2, 8)
-    self.ball.velocity = { x = 0, y = 200 }
+    self.paddle.speed = Play.PaddleSpeed
+    self.paddle.accel = Play.PaddleAccel
+    self.ball = Ball.new(self.game.width / 2 + Play.BallSpawnPositionOffset.x, self.game.height - Play.PaddleOffset + Play.BallSpawnPositionOffset.y, Play.BallRadius)
+    self.ball.velocity = Play.BallSpawnVelocity
 
     self.boundary = Boundary.new(self.game)
     self.conwayGrid = ConwayGrid.new(self.game.width / 12, self.game.height / 8, self.game.width - self.game.width / 12 * 2, self.game.height / 2)
@@ -38,6 +47,20 @@ function Play:enter()
     self.update = Play.update
 
     self.music = self.game.audio.play("music")
+
+    self.game:onResize(function(w, h)
+        self:setPaddlePosition(w, h)
+    end)
+end
+
+function Play:setPaddlePosition(w, h)
+    assert(self.paddle, 'Paddle not initialized')
+    local xPercentage = self.paddle.x / self.game.width
+
+    self.paddle.minX, self.paddle.maxX = 0, w - self.paddle.width
+
+    self.paddle.x = w * xPercentage
+    self.paddle.y = h - Play.PaddleOffset
 end
 
 function Play:exit()
