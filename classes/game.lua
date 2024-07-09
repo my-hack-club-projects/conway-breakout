@@ -133,6 +133,8 @@ function Game.audio.play(name)
     end
 
     stoppedSource:play()
+
+    return stoppedSource
 end
 
 function Game:update(dt)
