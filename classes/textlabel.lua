@@ -34,7 +34,9 @@ function TextLabel:update(dt)
             self.pressed = true
         elseif not love.mouse.isDown(1) and self.pressed then
             self.pressed = false
-
+            
+            Game.audio.play('click')
+            
             self.onClick()
         end
     else

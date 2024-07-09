@@ -7,6 +7,16 @@ Game.FontName = 'assets/fonts/PressStart2P.ttf'
 
 Game.collision = {}
 Game.color = {}
+Game.audio = {
+    sounds = {
+        bounce = {name = 'assets/sounds/ball_land.mp3', type = 'static'},
+        destroy = {name = 'assets/sounds/cell_destroy.mp3', type = 'static'},
+        click = {name = 'assets/sounds/click.mp3', type = 'static'},
+        lose = {name = 'assets/sounds/lose.mp3', type = 'static'},
+        music = {name = 'assets/sounds/music.mp3', type = 'stream'},
+    },
+    sources = {},
+}
 
 function Game:init()
     self.state = nil
@@ -93,6 +103,32 @@ function Game.color.hex2color(hex)
         if splitToRGB[#splitToRGB] < 0 then splitToRGB[#splitToRGB] = 0 end  --prevents negative values
     end
     return unpack(splitToRGB)
+end
+
+function Game.audio.play(name)
+    local sources = Game.audio.sources[name] or {}
+    local stoppedSource = false
+
+    for _, source in ipairs(sources) do
+        if source:isStopped() then
+            stoppedSource = source
+            break
+        end
+    end
+
+    if not stoppedSource then
+        local sound = Game.audio.sounds[name]
+
+        if not sound then
+            error('Sound not found: ' .. name)
+        end
+        
+        stoppedSource = love.audio.newSource(sound.name, sound.type)
+
+        table.insert(sources, stoppedSource)
+    end
+
+    stoppedSource:play()
 end
 
 function Game:update(dt)

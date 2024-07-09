@@ -22,7 +22,6 @@ function Ball:init(x, y, radius)
     self.isBall = true
 
     self.debounce = {}
-
     self.previousPositions = {}
 end
 
@@ -44,6 +43,13 @@ function Ball:check(entities)
                 if not Game.collision.circleRectangle(self.x, self.y, self.radius, entity.x, entity.y, entity.width, entity.height) then goto continue end
 
                 self.debounce[entity] = os.time()
+
+                 -- Sounds
+                 if entity.isPaddle or entity.isWall then
+                    Game.audio.play('bounce')
+                elseif entity.isCell then
+                    Game.audio.play('destroy')
+                end
 
                 if entity.isWall and entity.side == "bottom" then
                     return "bottom"
