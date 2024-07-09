@@ -3,7 +3,7 @@ local ConwayCell = require 'classes.conwaycell'
 
 local ConwayGrid = oo.class()
 
-ConwayGrid.StepInterval = 1
+ConwayGrid.StepInterval = 5
 
 function ConwayGrid:init(x, y, width, height)
     self.x = x or 0
