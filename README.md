@@ -7,5 +7,3 @@ A breakout game, combined with conway's game of life!
 1. Clone this repository
 2. Install Love2D: (https://love2d.org/)
 3. Run `love conway-breakout`
-
-**The above instructions run the game from source. You can also use precompiled binaries at the release page!**
